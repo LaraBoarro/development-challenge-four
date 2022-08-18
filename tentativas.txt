@@ -1,0 +1,67 @@
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+const port = 8080
+const repository = require('./repository')
+
+app.use(bodyParser.json());
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+)
+
+
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta de conexão ${port}.`)
+})
+
+app.get('/', (request, response) => {
+    response.json({ aplicacao: 'CRUD PESSOAS' })
+  })
+
+app.get('/pacientes', repository.getPacientes)
+app.get('/paciente/:id', repository.getPacienteById)
+app.post('/paciente', repository.createPaciente)
+app.put('/paciente/:id', repository.updatePaciente)
+app.delete('/pacientes/:id', repository.deletePessoa)
+
+// segunda tentativa
+
+const express = require('express')
+const next = require('next')
+
+const port = parseInt(process.env.PORT, 10) || 3000
+const dev = process.env.NODE_ENV !== 'production'
+const app = next({ dev })
+const handle = app.getRequestHandler()
+
+const repository = require('./repository')
+
+app.prepare().then(() => {
+  const server = express()
+
+  server.use(bodyParser.json());
+
+  server.use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+  )
+
+  .listen(port, () => {
+    console.log(`> Ready on http://localhost:${port}`)
+  })
+
+  server.all('*', (req, res) => {
+    return handle(req, res)
+  })
+
+  server.get('api/pacientes', repository.getPacientes)
+  server.get('api/paciente/:id', repository.getPacienteById)
+  server.post('api/paciente', repository.createPaciente)
+  server.put('api/paciente/:id', repository.updatePaciente)
+  server.delete('api/pacientes/:id', repository.deletePaciente)
+
+})

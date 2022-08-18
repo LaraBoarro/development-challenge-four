@@ -16,16 +16,24 @@ const FormMain = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         const data = {
-          name: event.target.name.value,
+          nome: event.target.name.value,
           email: event.target.email.value,
-          date: event.target.date.value,
+          date_birthday: event.target.date.value,
           address: event.target.address.value,
         }
+        const JSONdata = JSON.stringify(data)
+        // console.log(JSONdata)
 
-        console.log(data)
-    
-        // const JSONdata = JSON.stringify(data)
+        const response = await fetch("http://localhost:8080/api/tutorials", {
+            body: data,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            method: 'POST',
+        })
 
+        const result = await response.json()
+        console.log(result)
       }
 
   return (

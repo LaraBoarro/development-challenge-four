@@ -1,6 +1,7 @@
 import { Container } from '@mui/system'
 import Head from 'next/head'
 import FormMain from '../src/components/Forms/FormMain'
+import ListPacientes from '../src/components/ListPacientes'
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <main >
         <Container>
           <FormMain />
+          <ListPacientes />
         </Container>
       </main>
 
